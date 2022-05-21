@@ -1,4 +1,10 @@
 import { Formik, Field } from "formik";
+import { useContext, useEffect } from "react"
+import { setupAPIClient } from '../services/api';
+import { AuthContext } from '../Contexts/AuthContext'
+import { api } from './../services/apiClient';
+
+import { withSSRGuest } from './../utils/withSSRGuest';
 import {
   Box,
   Button,
@@ -14,6 +20,21 @@ import {
 export default function Home() {
 
 
+  const { user } = useContext(AuthContext)
+
+  useEffect(() => {
+    api.get('/me')
+      .then(response => console.log(response))
+      .catch(err => console.log(err))
+  }, [])
+
+
+  const { signIn } = useContext(AuthContext)
+
+  async function handleSubmit({ email, password }) {
+    await signIn({ email, password })
+  }
+
   return (
     <Flex bg="gray.100" align="center" justify="center" h="100vh">
       <Box bg="white" p={6} rounded="md" w={64}>
@@ -23,9 +44,7 @@ export default function Home() {
             password: "",
             rememberMe: false
           }}
-          onSubmit={(values) => {
-            alert(JSON.stringify(values, null, 2));
-          }}
+          onSubmit={(values) => handleSubmit(values)}
         >
           {({ handleSubmit, errors, touched }) => (
             <form onSubmit={handleSubmit}>
@@ -79,3 +98,9 @@ export default function Home() {
     </Flex>
   );
 }
+
+export const getServerSideProps = withSSRGuest(async (ctx) => {
+  return {
+    props: {}
+  }
+});
