@@ -5,10 +5,13 @@ import { api } from '../services/apiClient';
 
 
 export const AuthContext = createContext({})
+let authChannel;
 
 export function signOut() {
     destroyCookie(undefined, 'plataform-education.token')
     destroyCookie(undefined, 'plataform-education.refreshToken')
+
+    authChannel.postMessage('signOut')
     Router.push('/')
 }
 
@@ -17,13 +20,26 @@ export function AuthProvider({ children }) {
     const isAuthenticated = !!user;
 
     useEffect(() => {
+        authChannel = new BroadcastChannel('auth')
+        authChannel.onmessage = (message) => {
+            switch (message.data) {
+                case 'signOut':
+                    signOut()
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }, [])
+
+    useEffect(() => {
         const { 'plataform-education.token': token } = parseCookies()
         if (token) {
             api.get('/me').then(response => {
                 const { email, permissions, roles } = response.data
                 setUser({ email, permissions, roles })
             }).catch(err => {
-                console.log(" erro signOut")
                 signOut()
             })
         }
@@ -57,7 +73,7 @@ export function AuthProvider({ children }) {
 
     }
     return (
-        <AuthContext.Provider value={{ signIn, isAuthenticated, user }}>
+        <AuthContext.Provider value={{ signIn, signOut, isAuthenticated, user }}>
             {children}
         </AuthContext.Provider>
     )
