@@ -20,13 +20,12 @@ import {
 export default function Home() {
 
 
-  const { user } = useContext(AuthContext)
 
-  useEffect(() => {
-    api.get('/me')
-      .then(response => console.log(response))
-      .catch(err => console.log(err))
-  }, [])
+  // useEffect(() => {
+  //   api.get('/me')
+  //     .then(response => console.log(response))
+  //     .catch(err => console.log(err))
+  // }, [])
 
 
   const { signIn } = useContext(AuthContext)

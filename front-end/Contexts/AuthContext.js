@@ -23,6 +23,7 @@ export function AuthProvider({ children }) {
                 const { email, permissions, roles } = response.data
                 setUser({ email, permissions, roles })
             }).catch(err => {
+                console.log(" erro signOut")
                 signOut()
             })
         }
