@@ -1,18 +1,18 @@
-import { useContext, useEffect } from 'react';
-import { AuthContext } from '../Contexts/AuthContext'
+import React, { useContext, useEffect } from 'react';
+import { AuthContext } from '../Contexts/AuthContext';
 import { withSSRAuth } from '../utils/withSSRAuth';
 import { api } from '../services/apiClient';
 import { setupAPIClient } from '../services/apiClient';
 import { Button, Stack } from '@chakra-ui/react';
 
-export default function dashboard() {
-    const { user, signOut } = useContext(AuthContext)
+const Dashboard = () => {
+    const { user, signOut } = useContext(AuthContext);
 
     useEffect(() => {
         api.get('/me')
             .then(response => console.log(response))
-            .catch(err => console.log(err))
-    }, [])
+            .catch(err => console.log(err));
+    }, []);
 
     return (
         <Stack spacing={4} direction='row' align='center' justify='center' mt="8rem" >
@@ -23,8 +23,10 @@ export default function dashboard() {
                 Log out
             </Button>
         </Stack>
-    )
-}
+    );
+};
+
+export default Dashboard;
 
 export const getServerSideProps = withSSRAuth(async ctx => {
     const apiClient = setupAPIClient(ctx);
@@ -37,5 +39,3 @@ export const getServerSideProps = withSSRAuth(async ctx => {
         props: {},
     };
 });
-
-
