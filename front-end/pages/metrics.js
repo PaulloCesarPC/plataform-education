@@ -1,6 +1,6 @@
 import React from 'react'
 import { withSSRAuth } from '../utils/withSSRAuth';
-import { setupAPIClient } from '../services/apiClient';
+import { setupAPIClient } from '../services/api';
 
 export default function metrics() {
     return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from 'react-query';
-import { api } from '../services/api';
+import { api } from  '../services/apiClient';
 
 const Users = () => {
     const { data: users, isFetching, isLoading, refetch, error } = useQuery('users', async () => {

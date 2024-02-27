@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react';
 import { AuthContext } from '../Contexts/AuthContext';
 import { withSSRAuth } from '../utils/withSSRAuth';
 import { api } from '../services/apiClient';
-import { setupAPIClient } from '../services/apiClient';
 import { Button, Stack } from '@chakra-ui/react';
 
 const Dashboard = () => {
